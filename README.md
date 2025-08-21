@@ -6,9 +6,7 @@ A powerful and compact shell script to completely reset and clean all Augment Co
 
 - **Complete Data Removal**: Removes all Augment-related extensions, settings, cache, and temporary files
 - **Cross-Platform Support**: Works on Windows, macOS, and Linux
-- **Compact Terminal Interface**: Beautiful ASCII art with minimal screen footprint
 - **Safe Confirmation**: Requires user confirmation before proceeding
-- **Automatic Backup**: Creates backups of important files before modification
 - **Network Cache Reset**: Flushes DNS and network caches
 
 ## 🛠️ Installation
