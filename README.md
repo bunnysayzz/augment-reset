@@ -36,16 +36,19 @@ chmod +x augment-reset.sh
 #### For macOS/Linux:
 ```bash
 curl -o augment-reset.sh https://raw.githubusercontent.com/bunnysayzz/augment-reset/main/augment-reset.sh && chmod +x augment-reset.sh
+./augment-reset.sh
 ```
 
 #### For Windows (Git Bash/WSL):
 ```bash
 curl -o augment-reset.sh https://raw.githubusercontent.com/bunnysayzz/augment-reset/main/augment-reset.sh && chmod +x augment-reset.sh
+./augment-reset.sh
 ```
 
 #### For Windows (PowerShell):
 ```powershell
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/bunnysayzz/augment-reset/main/augment-reset.sh" -OutFile "augment-reset.sh"
+bash augment-reset.sh
 ```
 
 ### Option 3: Manual Copy-Paste
