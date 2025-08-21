@@ -35,19 +35,16 @@ chmod +x augment-reset.sh
 
 #### For macOS/Linux:
 ```bash
-# Download and make executable in one command
 curl -o augment-reset.sh https://raw.githubusercontent.com/bunnysayzz/augment-reset/main/augment-reset.sh && chmod +x augment-reset.sh
 ```
 
 #### For Windows (Git Bash/WSL):
 ```bash
-# Download and make executable in one command
 curl -o augment-reset.sh https://raw.githubusercontent.com/bunnysayzz/augment-reset/main/augment-reset.sh && chmod +x augment-reset.sh
 ```
 
 #### For Windows (PowerShell):
 ```powershell
-# Download the script
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/bunnysayzz/augment-reset/main/augment-reset.sh" -OutFile "augment-reset.sh"
 ```
 
