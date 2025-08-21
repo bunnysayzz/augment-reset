@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Augment Reset Tool - Compact Version
-# Developed by: https://github.com/bunnysayzz
+# Augment Reset Tool - Improved Version
+# Based on: https://github.com/bunnysayzz
+# Improved to match Python script functionality
 
 # Arrays to track operations
 removed_items=()
@@ -9,8 +10,7 @@ errors=()
 
 # Function to clear screen
 clear_screen() {
-    # Removed clear to eliminate gaps
-    :
+    clear 2>/dev/null || printf "\033c"
 }
 
 # Function to display compact banner
@@ -68,6 +68,7 @@ get_vscode_paths() {
         CACHE="$HOME/AppData/Roaming/Code/CachedExtensions"
         LOGS="$HOME/AppData/Roaming/Code/logs"
         WORKSPACE_STORAGE="$HOME/AppData/Roaming/Code/User/workspaceStorage"
+        GLOBAL_STORAGE="$HOME/AppData/Roaming/Code/User/globalStorage"
     elif [[ "$OSTYPE" == "darwin"* ]]; then
         # macOS
         USER_DATA="$HOME/Library/Application Support/Code/User"
@@ -75,6 +76,7 @@ get_vscode_paths() {
         CACHE="$HOME/Library/Caches/com.microsoft.VSCode"
         LOGS="$HOME/Library/Application Support/Code/logs"
         WORKSPACE_STORAGE="$HOME/Library/Application Support/Code/User/workspaceStorage"
+        GLOBAL_STORAGE="$HOME/Library/Application Support/Code/User/globalStorage"
     else
         # Linux
         USER_DATA="$HOME/.config/Code/User"
@@ -82,6 +84,7 @@ get_vscode_paths() {
         CACHE="$HOME/.cache/vscode"
         LOGS="$HOME/.config/Code/logs"
         WORKSPACE_STORAGE="$HOME/.config/Code/User/workspaceStorage"
+        GLOBAL_STORAGE="$HOME/.config/Code/User/globalStorage"
     fi
 }
 
@@ -91,6 +94,7 @@ close_vscode() {
         taskkill /F /IM "Code.exe" >/dev/null 2>&1
     else
         pkill -f "Visual Studio Code" >/dev/null 2>&1
+        pkill -f "code" >/dev/null 2>&1
     fi
     log_success "Closed VS Code processes"
 }
@@ -108,7 +112,35 @@ remove_augment_extensions() {
             fi
         done
     else
-        log_info "Extensions directory not found"
+        log_info "Extensions directory not found: $EXTENSIONS"
+    fi
+}
+
+# Function to clean JSON file safely
+clean_json_file() {
+    local file_path="$1"
+    local backup_path="${file_path}.backup.$(date +%s)"
+    
+    if [[ ! -f "$file_path" ]]; then
+        return
+    fi
+    
+    # Create backup
+    cp "$file_path" "$backup_path" 2>/dev/null
+    
+    # Try using jq first (most reliable)
+    if command -v jq >/dev/null 2>&1; then
+        if jq 'del(.[] | select(tostring | test("augment"; "i")))' "$file_path" > "${file_path}.tmp" 2>/dev/null; then
+            mv "${file_path}.tmp" "$file_path"
+            log_success "Cleaned JSON: $(basename "$file_path")"
+            return
+        fi
+    fi
+    
+    # Fallback: remove entire file if it contains augment (safer than breaking JSON)
+    if grep -q -i "augment" "$file_path" 2>/dev/null; then
+        rm "$file_path"
+        log_success "Removed JSON file containing augment: $(basename "$file_path")"
     fi
 }
 
@@ -116,39 +148,30 @@ remove_augment_extensions() {
 clean_vscode_settings() {
     # Clean settings.json
     if [[ -f "$USER_DATA/settings.json" ]]; then
-        # Create backup
-        cp "$USER_DATA/settings.json" "$USER_DATA/settings.json.backup" 2>/dev/null
-        
-        # Remove augment-related entries using jq if available, otherwise use sed
-        if command -v jq >/dev/null 2>&1; then
-            jq 'del(.[] | select(tostring | test("augment"; "i")))' "$USER_DATA/settings.json" > "$USER_DATA/settings.json.tmp" && mv "$USER_DATA/settings.json.tmp" "$USER_DATA/settings.json"
-        else
-            # Fallback to sed (less precise but works)
-            sed -i '/[Aa]ugment/d' "$USER_DATA/settings.json" 2>/dev/null
-        fi
-        log_success "Cleaned settings.json"
+        clean_json_file "$USER_DATA/settings.json"
     fi
     
     # Clean keybindings.json
     if [[ -f "$USER_DATA/keybindings.json" ]]; then
-        cp "$USER_DATA/keybindings.json" "$USER_DATA/keybindings.json.backup" 2>/dev/null
-        if command -v jq >/dev/null 2>&1; then
-            jq 'del(.[] | select(.command? | test("augment"; "i")))' "$USER_DATA/keybindings.json" > "$USER_DATA/keybindings.json.tmp" && mv "$USER_DATA/keybindings.json.tmp" "$USER_DATA/keybindings.json"
-        else
-            sed -i '/[Aa]ugment/d' "$USER_DATA/keybindings.json" 2>/dev/null
-        fi
-        log_success "Cleaned keybindings.json"
+        clean_json_file "$USER_DATA/keybindings.json"
     fi
     
-    # Clean globalStorage
-    if [[ -f "$USER_DATA/globalStorage/storage.json" ]]; then
-        cp "$USER_DATA/globalStorage/storage.json" "$USER_DATA/globalStorage/storage.json.backup" 2>/dev/null
-        if command -v jq >/dev/null 2>&1; then
-            jq 'del(.[] | select(tostring | test("augment"; "i")))' "$USER_DATA/globalStorage/storage.json" > "$USER_DATA/globalStorage/storage.json.tmp" && mv "$USER_DATA/globalStorage/storage.json.tmp" "$USER_DATA/globalStorage/storage.json"
-        else
-            sed -i '/[Aa]ugment/d' "$USER_DATA/globalStorage/storage.json" 2>/dev/null
+    # Clean globalStorage files
+    if [[ -d "$GLOBAL_STORAGE" ]]; then
+        for file in "$GLOBAL_STORAGE"/*.json; do
+            if [[ -f "$file" ]]; then
+                clean_json_file "$file"
+            fi
+        done
+        
+        # Clean state.vscdb if it exists
+        if [[ -f "$GLOBAL_STORAGE/state.vscdb" ]]; then
+            # For SQLite files, we'll remove the entire file if it contains augment
+            if strings "$GLOBAL_STORAGE/state.vscdb" 2>/dev/null | grep -q -i "augment"; then
+                rm "$GLOBAL_STORAGE/state.vscdb"
+                log_success "Removed globalStorage state.vscdb containing augment"
+            fi
         fi
-        log_success "Cleaned globalStorage/storage.json"
     fi
 }
 
@@ -157,15 +180,29 @@ clean_workspace_storage() {
     if [[ -d "$WORKSPACE_STORAGE" ]]; then
         for dir in "$WORKSPACE_STORAGE"/*; do
             if [[ -d "$dir" ]]; then
+                # Check if workspace contains Augment data
+                local has_augment=false
+                
+                # Check state.vscdb
                 if [[ -f "$dir/state.vscdb" ]]; then
-                    # For SQLite files, we'll just remove the entire workspace if it contains augment
-                    if grep -q -i "augment" "$dir/state.vscdb" 2>/dev/null; then
-                        rm -rf "$dir"
-                        log_success "Removed workspace: $(basename "$dir")"
+                    if strings "$dir/state.vscdb" 2>/dev/null | grep -q -i "augment"; then
+                        has_augment=true
                     fi
+                fi
+                
+                # Check other files in workspace
+                if find "$dir" -type f -name "*.json" -exec grep -l -i "augment" {} \; 2>/dev/null | head -1 >/dev/null; then
+                    has_augment=true
+                fi
+                
+                if [[ "$has_augment" == "true" ]]; then
+                    rm -rf "$dir"
+                    log_success "Removed workspace: $(basename "$dir")"
                 fi
             fi
         done
+    else
+        log_info "Workspace storage directory not found: $WORKSPACE_STORAGE"
     fi
 }
 
@@ -182,6 +219,8 @@ clean_cache_and_logs() {
                 fi
             fi
         done
+    else
+        log_info "Cache directory not found: $CACHE"
     fi
     
     # Clean logs
@@ -195,6 +234,8 @@ clean_cache_and_logs() {
                 fi
             fi
         done
+    else
+        log_info "Logs directory not found: $LOGS"
     fi
 }
 
@@ -223,6 +264,15 @@ clean_system_temp() {
     done
 }
 
+# Function to clean Windows registry (if on Windows)
+clean_registry_windows() {
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        # Windows registry cleaning would require reg.exe commands
+        # This is a simplified version - in practice you'd need more specific registry paths
+        log_info "Windows registry cleaning would require specific registry paths"
+    fi
+}
+
 # Function to reset network cache
 reset_network_cache() {
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
@@ -241,6 +291,9 @@ display_summary() {
     echo "✅ Successfully removed ${#removed_items[@]} items"
     if [[ ${#errors[@]} -gt 0 ]]; then
         echo "❌ ${#errors[@]} errors occurred"
+        for error in "${errors[@]}"; do
+            echo "   - $error"
+        done
     fi
     
     echo "📋 NEXT STEPS:"
@@ -251,8 +304,8 @@ display_summary() {
     echo "5. ✨ Enjoy your clean system!"
     
     echo ""
-    echo "👨‍💻 Developed by: bunnysayzz"
-    echo "🌐 GitHub: https://github.com/bunnysayzz/augment-reset.git"
+    echo "👨‍💻 Improved version based on Python script functionality"
+    echo "🌐 Original: https://github.com/bunnysayzz/augment-reset.git"
     echo ""
 }
 
@@ -260,6 +313,7 @@ display_summary() {
 main() {
     # Check for sudo access first, before showing anything
     if ! sudo -n true 2>/dev/null; then
+        echo "🔐 This script requires sudo access for some operations."
         sudo -v
         if [[ $? -ne 0 ]]; then
             echo "❌ Authentication failed. Exiting."
@@ -308,8 +362,14 @@ main() {
     log_info "🗂️  Step 6: Cleaning system temporary files..."
     clean_system_temp
     
-    # Step 7: Reset network cache
-    log_info "🌐 Step 7: Resetting network cache..."
+    # Step 7: Clean registry (Windows only)
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        log_info "🔧 Step 7: Cleaning Windows registry..."
+        clean_registry_windows
+    fi
+    
+    # Step 8: Reset network cache
+    log_info "🌐 Step 8: Resetting network cache..."
     reset_network_cache
     
     # Display summary
