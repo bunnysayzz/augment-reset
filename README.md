@@ -11,24 +11,14 @@ A powerful and compact shell script to completely reset and clean all Augment Co
 - **Automatic Backup**: Creates backups of important files before modification
 - **Network Cache Reset**: Flushes DNS and network caches
 
-## 📋 Requirements
-
-- Bash shell
-- Administrator/Root privileges (for network cache operations)
-- VS Code installed
-
 ## 🛠️ Installation
 
 ### Option 1: Clone Repository
 ```bash
-# Clone the repository
 git clone https://github.com/bunnysayzz/augment-reset.git
-
-# Navigate to the directory
 cd augment-reset
-
-# Make the script executable
 chmod +x augment-reset.sh
+./augment-reset.sh
 ```
 
 ### Option 2: Direct Download (Copy-Paste)
@@ -61,7 +51,6 @@ bash augment-reset.sh
 ## 🎯 Usage
 
 ```bash
-# Run the script
 ./augment-reset.sh
 ```
 
@@ -115,10 +104,7 @@ chmod +x augment-reset.sh
 
 **Script Won't Run**
 ```bash
-# Ensure you're in the correct directory
 ls -la augment-reset.sh
-
-# Run with bash explicitly
 bash augment-reset.sh
 ```
 
@@ -135,10 +121,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
 
