@@ -1,6 +1,6 @@
 # Augment Reset Tool
 
-A powerful and compact shell script to completely reset and clean all Augment Code extension data from your system.
+A powerful and compact shell script to completely reset and clean all Augment Code extension data from your system. Get Augment Code from [https://www.augmentcode.com](https://www.augmentcode.com)
 
 ## 🚀 Features
 
@@ -76,6 +76,7 @@ The tool removes the following Augment-related data:
 
 - **Irreversible Action**: This tool permanently deletes data
 - **Fresh Account Required**: You'll need to create a new Augment account after reset
+- **Get Augment**: Download and install Augment Code extension from [https://www.augmentcode.com](https://www.augmentcode.com)
 - **VS Code Restart**: VS Code will be closed during the process
 - **System Restart**: Recommended after completion for best results
 
@@ -134,4 +135,4 @@ Give a ⭐️ if this project helped you!
 
 ---
 
-**Disclaimer**: Use this tool at your own risk. Always backup important data before running system cleanup tools.
+**Disclaimer**: Use this tool at your own risk. Always backup important data before running system cleanup tools. This tool is for educational purposes only.
