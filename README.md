@@ -1,3 +1,5 @@
+**For Qoder reset, click here: [https://github.com/bunnysayzz/qoder-reset.git](https://github.com/bunnysayzz/qoder-reset.git)**
+
 # Augment Reset Tool
 
 A powerful and compact shell script to completely reset and clean all Augment Code extension data from your system. Get Augment Code from [https://www.augmentcode.com](https://www.augmentcode.com)
