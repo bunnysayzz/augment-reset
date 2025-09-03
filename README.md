@@ -1,4 +1,17 @@
-**For Qoder reset, click here: [https://github.com/bunnysayzz/qoder-reset.git](https://github.com/bunnysayzz/qoder-reset.git)**
+**For Qoder reset, click here: [https://github.com/bunnysayzz/qoder-reset.git](https://
+github.com/bunnysayzz/qoder-reset.git)**
+
+## ⚠️ **IMPORTANT NOTICE** ⚠️
+
+> **✨ Use a fingerprint browser to register after resetting Augment!**
+> 
+> **Why?** Duplicate registrations may still be recognized due to browser cache or fingerprinting, even after resetting Augment's device identity.
+> 
+> **Solution:** Use a fingerprint browser like [FingerprintJS](https://sourceforge.net/projects/fingerprintjs.mirror/) to create completely new browser profiles with unique fingerprints.
+> 
+> **Download:** [FingerprintJS Mirror on SourceForge](https://sourceforge.net/projects/fingerprintjs.mirror/)
+
+---
 
 # Augment Reset Tool
 
