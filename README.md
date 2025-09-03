@@ -6,9 +6,9 @@
 > 
 > **Why?** Duplicate registrations may still be recognized due to browser cache or fingerprinting, even after resetting Augment's device identity.
 > 
-> **Solution:** Use a fingerprint browser like [FingerprintJS](https://sourceforge.net/projects/fingerprintjs.mirror/) to create completely new browser profiles with unique fingerprints.
+> **Solution:** Use a fingerprint browser to create completely new browser profiles with unique fingerprints.
 > 
-> **Download:** [FingerprintJS Mirror on SourceForge](https://sourceforge.net/projects/fingerprintjs.mirror/)
+> **Download:** [Privacy Guides - Desktop Browsers](https://www.privacyguides.org/en/desktop-browsers/) for recommended privacy-focused browsers
 
 ---
 
