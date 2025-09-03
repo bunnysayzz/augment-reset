@@ -1,5 +1,4 @@
-**For Qoder reset, click here: [https://github.com/bunnysayzz/qoder-reset.git](https://
-github.com/bunnysayzz/qoder-reset.git)**
+**For Qoder reset, click here: [https://github.com/bunnysayzz/qoder-reset.git](https://github.com/bunnysayzz/qoder-reset.git)**
 
 ## ⚠️ **IMPORTANT NOTICE** ⚠️
 
