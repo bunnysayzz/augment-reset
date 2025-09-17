@@ -304,8 +304,8 @@ display_summary() {
     echo "5. ✨ Enjoy your clean system!"
     
     echo ""
-    echo "👨‍💻 Improved version based on Python script functionality"
-    echo "🌐 Original: https://github.com/bunnysayzz/augment-reset.git"
+    echo "🌐 GitHub: https://github.com/bunnysayzz/augment-reset.git"
+    echo "🍎 For Mac apps, visit: http://macbunny.co"
     echo ""
 }
 

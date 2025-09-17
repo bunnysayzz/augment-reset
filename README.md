@@ -1,5 +1,7 @@
 **For Qoder reset, click here: [https://github.com/bunnysayzz/qoder-reset.git](https://github.com/bunnysayzz/qoder-reset.git)**
 
+**For Mac apps, click here: [http://macbunny.co](http://macbunny.co)**
+
 ## ⚠️ **IMPORTANT NOTICE** ⚠️
 
 > **✨ Use a fingerprint browser to register after resetting Augment!**
