@@ -14,7 +14,7 @@
 
 ---
 
-# Augment Reset Tool
+# Augment Reset Tools
 
 A powerful and compact shell script to completely reset and clean all Augment Code extension data from your system. Get Augment Code from [https://www.augmentcode.com](https://www.augmentcode.com)
 
